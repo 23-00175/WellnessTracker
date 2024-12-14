@@ -133,11 +133,12 @@ public class HomeMenu {
     //Signup
     public void signup() {
         System.out.println("Account Creation");
+        System.out.println("--------------------------------------------------");
         String username, password;
 
         while (true) {
             try {
-                System.out.print("\nEnter username (atleast 8 characters): ");
+                System.out.print("Enter username (atleast 8 characters): ");
                 username = scanner.nextLine();   
                 // Check if username already exists, not empty and has atleast 8 characters before proceeding
                 Utility.validateUsername(username, "Username");
@@ -155,7 +156,8 @@ public class HomeMenu {
 
         while (true) {    
             try {    
-                System.out.print("\nEnter password (atleast 8 characters and one number): ");
+                System.out.println("--------------------------------------------------");
+                System.out.print("Enter password (atleast 8 characters and one number): ");
                 password = scanner.nextLine();
                 // Check if password is not empty, has atleast 8 characters, has one integer
                 Utility.validatePassword(password, "Password");
@@ -169,6 +171,7 @@ public class HomeMenu {
         Users newUser = new Users(username, password);
         
         if (usersDAO.createUser(newUser)) {
+            System.out.println("--------------------------------------------------");
             System.out.println("Account created successfully! You can now login.");
             Utility.clearScreen(1);
         } else {
