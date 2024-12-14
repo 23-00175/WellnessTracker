@@ -12,10 +12,10 @@ import utils.WellnessQuotes;
 
 public class WellnessDB {
     // JDBC URL, username, and password for MySQL database
-    private static final String DB_url = "jdbc:mysql://localhost:3306/"; // Default MySQL server URL (no database specified)
-    private static final String DB_name = "WellnessDB";
-    private static String DB_username = "root";  // Your MySQL username
-    private static String DB_password = "a4s6d8z9123";  // Your MySQL password
+    private static final String DB_url = "jdbc:mysql://localhost:3306/"; // Default MySQL server URL
+    private static final String DB_name = "WellnessDB"; //Name of Database
+    private static String DB_username = "root";  // Change to your MySQL username
+    private static String DB_password = "a4s6d8z9123";  // Change to your MySQL password
     static Scanner scanner = new Scanner(System.in);
 
     public static Connection getConnection() {
@@ -143,15 +143,13 @@ public class WellnessDB {
             }
         } catch (SQLException e) {
             System.out.println("Error: Unable to create the database or tables.");
-            e.printStackTrace(); // Print stack trace for better debugging
+            e.printStackTrace();
         }
     }
 
     public static void retryConnection() {
         while (true) {
-            System.out.print("\n-------------------------------------------------------------------------------------------");
-            System.out.println("\n\033[3mNote: Please enter the right credentials of your MySQL in order to connect to the database.\033[0m");
-            System.out.println("-------------------------------------------------------------------------------------------");
+            System.out.println("Please enter the right credentials of your MySQL.");
             System.out.print("Enter MySQL Username (default: root): ");
             String username = scanner.nextLine().trim();
             if (!username.isEmpty()) DB_username = username;
