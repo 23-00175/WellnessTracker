@@ -11,7 +11,7 @@ import utils.Utility;
 public class WorkoutTracker extends TrackerDB {
     private String workoutType;
     private double workoutDuration;
-    private int workoutId; // Added field for Workout ID
+    private int workoutId; 
 
     // Constructor
     public WorkoutTracker(int userId, LocalDate activityDate, String workoutType, double workoutDuration) {
@@ -48,13 +48,13 @@ public class WorkoutTracker extends TrackerDB {
     @Override
     public String getDetails() {
         String fetchWorkoutSql = "SELECT Workout_ID, Workout_Type, Workout_Duration, Activity_Date FROM workout_tracker "
-                + "WHERE User_ID = ?";  // Fetch workout data for a specific user
+                + "WHERE User_ID = ?"; 
     
         try (PreparedStatement stmt = connection.prepareStatement(fetchWorkoutSql)) {
-            stmt.setInt(1, getUserId());  // Set User_ID dynamically
+            stmt.setInt(1, getUserId()); 
             ResultSet rs = stmt.executeQuery();
     
-            String workoutDetails = "";  // Start with an empty string to build the result
+            String workoutDetails = "";
             boolean hasWorkouts = false;
     
             while (rs.next()) {
@@ -64,7 +64,6 @@ public class WorkoutTracker extends TrackerDB {
                 double workoutDuration = rs.getDouble("Workout_Duration");
                 Date activityDate = rs.getDate("Activity_Date");
     
-                // Concatenate workout details to the string
                 workoutDetails += "-----------------------------------\n"
                         + "Date: " + activityDate + "\n"
                         + "Workout ID: " + workoutID + "\n"
@@ -78,31 +77,29 @@ public class WorkoutTracker extends TrackerDB {
                 return "No workout data found.";
             }
             Utility.clearScreen(0);
-            return workoutDetails;  // Return the concatenated string
+            return workoutDetails; 
         } catch (SQLException e) {
             return "Error fetching workout data: " + e.getMessage();
         }
     }
     
-
     @Override
     public void insertToDatabase() {
         String sql = "INSERT INTO workout_tracker (User_ID, Activity_Date, Workout_Type, Workout_Duration) "
-                + "VALUES (?, ?, ?, ?)";  // No need to insert Workout_ID (auto-increment)
+                + "VALUES (?, ?, ?, ?)"; 
 
         try (PreparedStatement stmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, getUserId());  // Set User_ID dynamically
-            stmt.setDate(2, Date.valueOf(getActivityDate()));  // Set Activity Date
-            stmt.setString(3, workoutType);  // Set Workout Type
-            stmt.setDouble(4, workoutDuration);  // Set Workout Duration
+            stmt.setInt(1, getUserId());
+            stmt.setDate(2, Date.valueOf(getActivityDate())); 
+            stmt.setString(3, workoutType);
+            stmt.setDouble(4, workoutDuration); 
 
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                // Retrieve the auto-generated Workout_ID
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        setWorkoutId(generatedKeys.getInt(1));  // Set the generated Workout_ID
+                        setWorkoutId(generatedKeys.getInt(1));
                         System.out.println("Workout data inserted successfully with Workout ID: " + getWorkoutId());
                     }
                 }
@@ -114,16 +111,15 @@ public class WorkoutTracker extends TrackerDB {
         }
     }
 
-
     @Override
     public void deleteFromDatabase() {
-        String sql = "DELETE FROM workout_tracker WHERE User_ID = ? AND Workout_ID = ?";  // Delete by Workout_ID
+        String sql = "DELETE FROM workout_tracker WHERE User_ID = ? AND Workout_ID = ?"; 
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, getUserId());  // Set User_ID dynamically
-            stmt.setInt(2, getWorkoutId());  // Set Workout_ID dynamically from the object
+            stmt.setInt(1, getUserId());
+            stmt.setInt(2, getWorkoutId());
 
-            int rowsDeleted = stmt.executeUpdate();  // Execute the deletion
+            int rowsDeleted = stmt.executeUpdate();
             System.out.println(rowsDeleted > 0 ? "Workout data deleted successfully." : "Failed to delete workout data.");
         } catch (SQLException e) {
             System.out.println("Error deleting workout data: " + e.getMessage());
