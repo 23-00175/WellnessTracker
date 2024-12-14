@@ -38,8 +38,8 @@ public class LoggedInMenu {
             System.out.print("Enter choice: ");
     
             try {
-                String input = scanner.nextLine();  // Read input as String
-                int choice = Integer.parseInt(input);  // Attempt to parse to Integer
+                String input = scanner.nextLine();  
+                int choice = Integer.parseInt(input);  
     
                 switch (choice) {
                     case 1:
