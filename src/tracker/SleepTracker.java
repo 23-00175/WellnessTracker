@@ -54,13 +54,13 @@ public class SleepTracker extends TrackerDB {
     @Override
     public String getDetails() {
         String fetchSleepSql = "SELECT Sleep_ID, Sleep_Duration, Sleep_Quality, Activity_Date FROM sleep_tracker "
-                + "WHERE User_ID = ?";  // Fetch sleep data for a specific user
+                + "WHERE User_ID = ?";  
     
         try (PreparedStatement stmt = connection.prepareStatement(fetchSleepSql)) {
-            stmt.setInt(1, getUserId());  // Set User_ID dynamically
+            stmt.setInt(1, getUserId()); 
             ResultSet rs = stmt.executeQuery();
     
-            String sleepDetails = "";  // Start with an empty string to build the result
+            String sleepDetails = "";  
             boolean hasSleepData = false;
     
             while (rs.next()) {
@@ -70,7 +70,6 @@ public class SleepTracker extends TrackerDB {
                 String sleepQuality = rs.getString("Sleep_Quality");
                 Date activityDate = rs.getDate("Activity_Date");
     
-                // Concatenate sleep details to the string
                 sleepDetails += "-----------------------------------\n"
                         + "Date: " + activityDate + "\n"
                         + "Sleep ID: " + sleepID + "\n"
@@ -83,32 +82,29 @@ public class SleepTracker extends TrackerDB {
                 return "No sleep data found.";
             }
     
-            return sleepDetails;  // Return the concatenated string
+            return sleepDetails;
         } catch (SQLException e) {
             return "Error fetching sleep data: " + e.getMessage();
         }
     }
     
-    
-
     @Override
     public void insertToDatabase() {
         String sql = "INSERT INTO sleep_tracker (User_ID, Activity_Date, Sleep_Duration, Sleep_Quality) "
-                + "VALUES (?, ?, ?, ?)";  // No need to insert Sleep_ID (auto-increment)
+                + "VALUES (?, ?, ?, ?)"; 
 
         try (PreparedStatement stmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            stmt.setInt(1, getUserId());  // Set User_ID dynamically
-            stmt.setDate(2, Date.valueOf(getActivityDate()));  // Set Activity Date
-            stmt.setDouble(3, sleepDuration);  // Set Sleep Duration
-            stmt.setString(4, getSleepQuality().name());  // Set Sleep Quality
+            stmt.setInt(1, getUserId());
+            stmt.setDate(2, Date.valueOf(getActivityDate()));
+            stmt.setDouble(3, sleepDuration);
+            stmt.setString(4, getSleepQuality().name()); 
 
             int rowsInserted = stmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                // Retrieve the auto-generated Sleep_ID
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        setSleepId(generatedKeys.getInt(1));  // Set the generated Sleep_ID
+                        setSleepId(generatedKeys.getInt(1)); 
                         System.out.println("\nSleep data inserted successfully with Sleep ID: " + getSleepId());
                     }
                 }
@@ -122,13 +118,13 @@ public class SleepTracker extends TrackerDB {
 
     @Override
     public void deleteFromDatabase() {
-        String sql = "DELETE FROM sleep_tracker WHERE User_ID = ? AND Sleep_ID = ?";  // Delete based on User_ID and Sleep_ID
+        String sql = "DELETE FROM sleep_tracker WHERE User_ID = ? AND Sleep_ID = ?";
 
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-            stmt.setInt(1, getUserId());  // Set User_ID dynamically
-            stmt.setInt(2, getSleepId());  // Set Sleep_ID dynamically from the object
+            stmt.setInt(1, getUserId());
+            stmt.setInt(2, getSleepId()); 
 
-            int rowsDeleted = stmt.executeUpdate();  // Execute the deletion
+            int rowsDeleted = stmt.executeUpdate();
             System.out.println(rowsDeleted > 0 ? "Sleep data deleted successfully." : "Failed to delete sleep data.");
         } catch (SQLException e) {
             System.out.println("Error deleting sleep data: " + e.getMessage());
