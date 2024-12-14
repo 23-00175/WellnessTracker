@@ -38,7 +38,7 @@ public class UsersDAO {
             if (rowsInserted > 0) {
                 try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
-                        user.setId(generatedKeys.getInt(1)); // Set User_ID in the Users object
+                        user.setId(generatedKeys.getInt(1));
                     }
                 }
                 return true;
@@ -58,7 +58,7 @@ public class UsersDAO {
                 if (rs.next()) {
                     // Retrieve User_ID along with Username and Password
                     return new Users(
-                        rs.getInt("User_ID"),    // Add User_ID
+                        rs.getInt("User_ID"),  
                         rs.getString("Username"),
                         rs.getString("Password")
                     );
