@@ -5,14 +5,14 @@ import java.util.Scanner;
 
 public class Utility {
 
-    public static void welcomePage() {
+    public static void printwelcomePage() {
         Utility.clearScreen(0);
         System.out.println("---------------------Welcome to Wellness Tracker---------------------");
         System.out.println("A place to monitor your wellness!");
         System.out.println("Your meals, sleep, and workout are all stored here!");
         System.out.println("---------------------------------------------------------------------");
     }
-
+    
     public static void clearScreen(int seconds) {
         try {
             Thread.sleep(seconds * 1000);
@@ -55,7 +55,6 @@ public class Utility {
         System.out.println();
         System.out.println("THANK YOU FOR USING THE PROGRAM.");
         }
-
 
     //Password must not be below 8 characters
     public static void validateUsername(String username, String fieldName) {
