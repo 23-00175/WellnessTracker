@@ -12,8 +12,6 @@ public class HomeMenu {
     private Scanner scanner;
     private UsersDAO usersDAO;
     private ProfileDAO profileDAO;
-    private Users users;
-    private LoggedInMenu loggedInMenu;
 
     public HomeMenu() {
     scanner = new Scanner(System.in);
@@ -35,8 +33,8 @@ public class HomeMenu {
             System.out.print("Enter choice: ");
             
             try {
-                String input = scanner.nextLine();  // Read input as String
-                int choice = Integer.parseInt(input);  // Attempt to parse to Integer
+                String input = scanner.nextLine(); 
+                int choice = Integer.parseInt(input); 
 
                 Utility.validateInt(choice, "Choice");
 
@@ -68,8 +66,6 @@ public class HomeMenu {
         }
     }
 
-    
-    
     //Login
     public void login() {
         if (!usersDAO.hasUsers()) {
@@ -78,19 +74,21 @@ public class HomeMenu {
             return;
         } else {
             System.out.println("Login Window");
+            System.out.println("--------------------------------------------------");
             String username;
     
             while (true) {
-                System.out.print("\nEnter username (press ENTER to return to menu): ");
+                System.out.print("Enter username (press ENTER to return to menu): ");
                 username = scanner.nextLine();
                 if (username.isEmpty()) {
                     Utility.clearScreen(0);
                     return;
                 } else {
-                    Users user = usersDAO.getUser(username); // Fetch user from database
+                    Users user = usersDAO.getUser(username); 
                     if (user != null) {
                         System.out.println("Username found.");
-                        checkPassword(user); // Pass the user object to check password
+                        System.out.println("--------------------------------------------------");
+                        checkPassword(user);
                         return;
                     } else {
                         System.out.println("Username not found. Please try again.");
@@ -99,26 +97,27 @@ public class HomeMenu {
             }
         }
     }
-    
 
+    // Checks password if it exists with the username
     public void checkPassword(Users user) {
         while (true) {
-            System.out.print("\nEnter password (press ENTER to go return to menu): ");
+            System.out.print("Enter password (press ENTER to go return to menu): ");
             String password = scanner.nextLine();
             if (password.isEmpty()) {
                 Utility.clearScreen(0);
                 return;
             }
             if (user.getPassword().equals(password)) {
+                System.out.println("--------------------------------------------------");
                 System.out.println("\nLogin successful!");
                 Utility.clearScreen(1);
                 
                 ProfileDAO profileDAO = new ProfileDAO();
-                Profile profile = profileDAO.getProfile(user.getUser_id()); // Use user_id of the logged-in user
+                Profile profile = profileDAO.getProfile(user.getUser_id()); 
                 if (profile == null) {
                     System.out.println("Profile not found. Proceeding to profile creation.");
                     Utility.clearScreen(1);
-                    createProfile(user);  // Pass user object to createProfile method
+                    createProfile(user); 
                 } else {
                     Utility.clearScreen(0);
                     System.out.println("Profile found. Loading data...");
@@ -177,6 +176,7 @@ public class HomeMenu {
         }
     }
 
+    // Profile creation
     public void createProfile(Users user) {
         System.out.println("\nProfile Creation");
     
@@ -189,7 +189,7 @@ public class HomeMenu {
                 System.out.print("Enter first name: ");
                 first_name = scanner.nextLine();
                 Utility.validateText(first_name, "First name");
-                break;  // Exit loop if no exception is thrown
+                break; 
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
@@ -201,7 +201,7 @@ public class HomeMenu {
                 System.out.print("Enter last name: ");
                 last_name = scanner.nextLine();
                 Utility.validateText(last_name, "Last name");
-                break;  // Exit loop if no exception is thrown
+                break;  
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
@@ -213,7 +213,7 @@ public class HomeMenu {
                 System.out.print("Enter gender: ");
                 gender = scanner.nextLine();
                 Utility.validateText(gender, "Gender");
-                break;  // Exit loop if no exception is thrown
+                break; 
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
@@ -224,14 +224,14 @@ public class HomeMenu {
             try {
                 System.out.print("Enter age: ");
                 age = scanner.nextInt();
-                scanner.nextLine();  // Clear the buffer
+                scanner.nextLine();  
                 Utility.validateInt(age, "Age");
-                break;  // Exit loop if no exception is thrown
+                break;  
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             } catch (java.util.InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid integer for age.");
-                scanner.nextLine();  // Clear the buffer
+                scanner.nextLine(); 
             }
         }
 
@@ -240,14 +240,14 @@ public class HomeMenu {
             try {
                 System.out.print("Enter weight (in kg): ");
                 weight = scanner.nextDouble();
-                scanner.nextLine();  // Clear the buffer
+                scanner.nextLine(); 
                 Utility.validateDouble(weight, "Weight");
-                break;  // Exit loop if no exception is thrown
+                break; 
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             } catch (java.util.InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a valid number for weight.");
-                scanner.nextLine();  // Clear the buffer
+                scanner.nextLine();  
             }
         }
 
@@ -256,9 +256,9 @@ public class HomeMenu {
             try {
                 System.out.print("Enter height (in cm): ");
                 height = scanner.nextDouble();
-                scanner.nextLine();  // Clear the buffer
+                scanner.nextLine(); 
                 Utility.validateDouble(height, "Height");
-                break;  // Exit loop if no exception is thrown
+                break;  
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             } catch (java.util.InputMismatchException e) {
@@ -274,14 +274,13 @@ public class HomeMenu {
             System.out.println("Profile created successfully.");
             Utility.pauseScreen(1);
     
-            // After profile creation, show the logged-in menu
+            // After profile creation, show the logged-in/dashboard menu
             LoggedInMenu loggedInMenu = new LoggedInMenu();
-            loggedInMenu.dashboard(user);  // Pass the user object to dashboard for further actions
+            loggedInMenu.dashboard(user); 
         } else {
             System.out.println("Failed to create profile. Please try again.");
         }
     }
-    
 }
 
 
