@@ -16,9 +16,9 @@ public class Main {
         boolean status = true;
         while (status) {
             try {
-                Utility.welcomePage();
-                System.out.println("1. Start");
-                System.out.println("2. Exit");
+                Utility.printwelcomePage();
+                System.out.println("1. \033[1;32m Login\033[0m"); 
+                System.out.println("2. \033[1;31m Exit\033[0m"); 
                 System.out.print("Enter choice: ");
                 int start_choice = scanner.nextInt();
 
