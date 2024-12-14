@@ -10,7 +10,6 @@ import utils.Utility;
 public class TrackerManager {
 
     Scanner scanner = new Scanner(System.in);
-    // Meal Tracker Methods
     
     public void showTracker(Users user) {
         System.out.println("Trackers");
@@ -49,8 +48,9 @@ public class TrackerManager {
         }
     }
 
+    // MealTracker
     public void showMealTracker(Users user) {
-        boolean exitMenu = false;  // Flag to control menu flow
+        boolean exitMenu = false; 
         
         while (!exitMenu) {
             System.out.println("Meal Tracker");
@@ -62,7 +62,7 @@ public class TrackerManager {
             try {
                 int choice = scanner.nextInt();
                 Utility.validateInt(choice, "choice");
-                scanner.nextLine();  // Consume newline character
+                scanner.nextLine(); 
         
                 switch (choice) {
                     case 1:
@@ -89,7 +89,6 @@ public class TrackerManager {
             }
         }
     }
-    
 
     // View Meals
     private boolean viewMeals(Users user) {
@@ -109,11 +108,10 @@ public class TrackerManager {
             return true; // Meals exist
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            return false; // Error, assume no meals
+            return false;
         }
     }
     
-
     // Add Meal
     private void addMeal(Users user) {
         Utility.clearScreen(0);
@@ -133,7 +131,6 @@ public class TrackerManager {
         mealTracker.setMealDescription(mealDescription);
 
         try {
-                    // Debugging: Check the values being set
             Utility.clearScreen(0);
             System.out.println("\nAdding Meal Data:");
             System.out.println("Meal Type: " + mealTracker.getMealType());
@@ -157,8 +154,8 @@ public class TrackerManager {
         }
     
         System.out.print("Enter the ID of the meal to delete: ");
-        int mealId = scanner.nextInt(); // User enters the meal ID to delete
-        scanner.nextLine(); // Consume newline character
+        int mealId = scanner.nextInt();
+        scanner.nextLine();
     
         System.out.print("Are you sure you want to delete meal with ID " + mealId + "? (y/n): ");
         String confirmation = scanner.nextLine();
@@ -166,7 +163,7 @@ public class TrackerManager {
         if (confirmation.equalsIgnoreCase("y")) {
             LocalDate today = LocalDate.now();
             MealTracker mealTracker = new MealTracker(user.getUser_id(), today, null, null);
-            mealTracker.setMealId(mealId); // Set the selected mealId for deletion
+            mealTracker.setMealId(mealId);
     
             try {
                 mealTracker.deleteFromDatabase(); // Delete the meal from the database
@@ -181,8 +178,7 @@ public class TrackerManager {
         }
     }
     
-
-    // Workout Tracker Methods
+    // Workout Tracker
     public void showWorkoutTracker(Users user) {
         boolean exit = false;
     
@@ -238,11 +234,10 @@ public class TrackerManager {
             return true; // Workouts exist
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            return false; // Error, assume no workouts
+            return false;
         }
     }
     
-
     // Add Workout
     private void addWorkout(Users user) {
         Utility.clearScreen(0);
@@ -260,7 +255,6 @@ public class TrackerManager {
         workoutTracker.setWorkoutDuration(workoutDuration);
 
         try {
-            // Debugging: Check the values being set
             Utility.clearScreen(0);
             System.out.println("\nAdding Workout Data:");
             System.out.println("Workout Type: " + workoutTracker.getWorkoutType());
@@ -277,8 +271,8 @@ public class TrackerManager {
 
     // Delete Workout
     private void deleteWorkout(Users user) {
-        if (!viewWorkouts(user)) { // Call viewWorkouts before proceeding
-            return; // Exit if no workouts are available
+        if (!viewWorkouts(user)) { 
+            return;
         }
     
         System.out.print("Enter the ID of the workout to delete: ");
@@ -308,8 +302,7 @@ public class TrackerManager {
         }
     }
     
-    
-    // Sleep Tracker Methods
+    // Sleep Tracker
     public void showSleepTracker(Users user) {
         boolean exit = false;
         while (!exit){
@@ -364,32 +357,29 @@ public class TrackerManager {
             return true; // Sleep data exists
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-            return false; // Error occurred, assume no sleep data
+            return false;
         }
     }
     
-
     // Add Sleep Record
     private void addSleep(Users user) {
         Utility.clearScreen(0);
-        // Consume the leftover newline character
         scanner.nextLine();
     
         // Get today's date
         LocalDate today = LocalDate.now();
         SleepTracker sleepTracker = new SleepTracker(user.getUser_id(), today, 0.0, null);
     
-        // Step 1: Get the sleep duration (in minutes)
         System.out.print("Enter sleep duration (in minutes): ");
         double sleepDuration = scanner.nextDouble();
         
         // Validate that the sleep duration is positive
         if (sleepDuration <= 0) {
             System.out.println("Error: Sleep duration must be positive.");
-            return;  // Exit if invalid
+            return;
         }
     
-        // Step 2: Prompt the user to choose sleep quality
+        // Choose sleep quality
         System.out.println("Sleep quality: ");
         System.out.println("1. BAD");
         System.out.println("2. DECENT");
@@ -416,17 +406,14 @@ public class TrackerManager {
                 return;  // Exit if invalid choice
         }
     
-        // Step 3: Set the sleep duration and quality in the sleep tracker object
         sleepTracker.setSleepDuration(sleepDuration);
         sleepTracker.setSleepQuality(sleepQuality);
     
-        // Debugging: Check the values being set
         Utility.clearScreen(0);
         System.out.println("\nAdding Sleep Data:");
         System.out.println("Sleep Duration: " + sleepTracker.getSleepDuration() + " minutes");
         System.out.println("Sleep Quality: " + sleepTracker.getSleepQuality());
     
-        // Step 4: Insert the sleep data into the database
         try {
             sleepTracker.insertToDatabase();  // Add sleep data to the database
             System.out.println("Sleep data added successfully!");
@@ -436,8 +423,6 @@ public class TrackerManager {
             System.out.println("An error occurred while adding the sleep data: " + e.getMessage());
         }
     }
-    
-    
 
     // Delete Sleep Record
     private void deleteSleep(Users user) {
@@ -470,8 +455,6 @@ public class TrackerManager {
         }
     }
     
-
-    // Helper Method to Get Meal Type
     private String getMealType() {
         String mealType = null;
         while (mealType == null) {
