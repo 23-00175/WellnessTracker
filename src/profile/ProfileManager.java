@@ -4,26 +4,21 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import menu.HomeMenu;
-import users.Users;
 import utils.Utility;
 
 public class ProfileManager {
 
     private ProfileDAO profileDAO;
     private Scanner scanner;
-    private HomeMenu homemenu;
-    private Users user;
 
     public ProfileManager() {
         this.profileDAO = new ProfileDAO();
-        this.scanner = new Scanner(System.in);  // Initialize scanner here
+        this.scanner = new Scanner(System.in); 
     }
 
     // Show profile
     public void showProfile(Profile profile) {
         System.out.println(profile.toString());
-        
-        // Immediately show profile options after displaying the profile
     }
 
     // Profile options (edit, delete)
@@ -36,13 +31,13 @@ public class ProfileManager {
             System.out.println("3. Return to Dashboard");
             System.out.print("Enter choice (1-3): ");
             try {
-            int choice = scanner.nextInt();  // Get the user's choice
+            int choice = scanner.nextInt();  
             Utility.validateInt(choice, "Choice");
 
             switch (choice) {
                 case 1: // Edit profile
                     Utility.clearScreen(0);
-                    editProfile(profile);  // Call edit profile method
+                    editProfile(profile);  
                     break;
                 case 2: // Delete profile
                     deleteProfile(profile);
@@ -52,7 +47,7 @@ public class ProfileManager {
                     return;
                 default:
                     System.out.println("Invalid choice. Please choose from 1-3.");
-                    Utility.pauseClearScreen(scanner, 0);  // Wait for user input before retry
+                    Utility.pauseClearScreen(scanner, 0);  
             }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number between 1 and 3.");
@@ -70,8 +65,8 @@ public class ProfileManager {
         System.out.println("3. Gender\t 6. Back to Profile");
         System.out.print("Choose which to edit (1-6): ");
         
-        int edit_choice = scanner.nextInt();  // Get the user's choice for what to edit
-        scanner.nextLine();  // Consume leftover newline
+        int edit_choice = scanner.nextInt();  
+        scanner.nextLine(); 
 
         switch (edit_choice) {
             case 1: // Edit name (first name and last name)
@@ -96,7 +91,7 @@ public class ProfileManager {
                 break;
 
             case 3: // Edit gender
-                scanner.nextLine(); // To consume the newline after nextInt() or nextDouble()
+                scanner.nextLine(); 
                 System.out.print("Enter new gender: ");
                 String newGender = scanner.nextLine();
                 profile.setGender(newGender);
@@ -118,11 +113,11 @@ public class ProfileManager {
 
             case 6: // Go back to Profile
                 Utility.clearScreen(0);
-                return; // Go back to the profile options
+                return; 
 
             default:
                 System.out.println("Invalid choice. Please choose from 1-6.");
-                Utility.pauseClearScreen(scanner, 1);  // Wait for user input before retry
+                Utility.pauseClearScreen(scanner, 1); 
         }
 
         // Update profile in the database if modified
@@ -130,8 +125,8 @@ public class ProfileManager {
             Utility.clearScreen(0);
             System.out.println("Profile updated successfully!");
             System.out.println();
-            showProfile(profile);  // Show the updated profile
-            Utility.pauseClearScreen(scanner, 1); // Pause for user to read the update message
+            showProfile(profile);  
+            Utility.pauseClearScreen(scanner, 1); // 
         } else {
             System.out.println("Failed to update profile. Please try again.");
             Utility.pauseClearScreen(scanner, 1);
